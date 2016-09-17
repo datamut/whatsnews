@@ -1,0 +1,1 @@
++ add exclude rules, e.g. exclude crosswords
