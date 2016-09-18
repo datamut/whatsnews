@@ -25,7 +25,7 @@ def search():
     cursor = db.articles.find(
             {'$text': {'$search': query}},
             {'_id': 0, 'score': {'$meta': 'textScore'}}
-        ).sort([('score', {'$meta': 'textScore'})])
+        ).sort([('score', {'$meta': 'textScore'})]).limit(10)
     result = list(cursor)
     return Response(json.dumps(result), mimetype='application/json')
 
