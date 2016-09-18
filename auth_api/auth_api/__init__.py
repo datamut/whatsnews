@@ -34,4 +34,4 @@ def get_token(client_id, secret):
 
     resp = auth_service.get_token(client_id, secret)
     result = json.dumps(resp)
-    return Response(ret_json, mimetype='application/json')
+    return Response(result, mimetype='application/json')
