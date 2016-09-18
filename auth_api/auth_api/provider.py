@@ -1,9 +1,14 @@
-
+"""
+Author: Wenhua Yang
+Date: 09/18/2016
+"""
 
 import requests
 
 
 class AuthService(object):
+    """auth_service provider.
+    """
 
     def __init__(self, server):
         # TODO: service descovery rather than designate server

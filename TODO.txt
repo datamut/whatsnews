@@ -1,4 +1,0 @@
-full text search with score:
-    db.articles.find({$text: {$search: "ends his life under assisted"}}, {title: 1, _id: 1, score : { $meta: "textScore" }}).sort({ score : { $meta : 'textScore' } })
-
-but rank service still need for advanced rank.

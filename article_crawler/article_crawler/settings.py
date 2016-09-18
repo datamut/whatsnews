@@ -27,9 +27,9 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+#DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+#CONCURRENT_REQUESTS_PER_DOMAIN = 1
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
@@ -90,6 +90,8 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-KAFKA_TOPIC_ID = 'mytopic'
-KAFKA_GROUP_ID = 'my-group'
+KAFKA_TOPIC_ID = 'whatsnews_topic_index'
+KAFKA_GROUP_ID = 'whatsnews_group_index'
 KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
+
+ARTICLE_OUT_FILE = '/data/project/whatsnews/article_out/crawl_articles.txt'

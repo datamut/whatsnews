@@ -12,14 +12,26 @@ KAFKA_GROUP_ID = 'KAFKA_GROUP_ID'
 KAFKA_BOOTSTRAP_SERVERS = 'KAFKA_BOOTSTRAP_SERVERS'
 
 class KafkaConsumeSpider(scrapy.Spider):
+    """This abstract spider integrate Kafka consumer with scrapy.Spider.
+    Make it possible to crawl urls from Kafka message.
+    """
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
+        """Add a hook here to setup Kafka connect.
+        """
         spider = super(KafkaConsumeSpider, cls).from_crawler(crawler, *args, **kwargs)
         spider.set_kafka(crawler.settings)
         return spider
 
     def set_kafka(self, settings):
+        """Set Kafka consumer info. Add signals to triger Kafka consume action.
+
+        Raises
+        ------
+        Raise ValueError when topic, group, or bootstrap_servers is not
+        specified.
+        """
         topic = settings.get(KAFKA_TOPIC_ID, None)
         if not topic:
             raise ValueError('{} setting is required'.format(KAFKA_TOPIC_ID))
@@ -38,13 +50,16 @@ class KafkaConsumeSpider(scrapy.Spider):
         self.crawler.signals.connect(self.item_scraped, scrapy.signals.item_scraped)
 
     def process_request(self):
+        """Process messages from Kafka. Messages from Kafka are urls. It will
+        get urls here and crawl these urls.
+        """
         message = self.consumer.poll()
         if message:
             for msg_list in message.values():
                 for record in msg_list:
                     url = record.value
                     if url:
-                        url = url.decode()[1:-1] # TODO: to remove " from kafka??
+                        url = url.decode()[1:-1] # TODO: remove " from kafka?
                         requests = self.make_requests_from_url(url)
                         if requests:
                             self.crawler.engine.crawl(requests, spider=self)

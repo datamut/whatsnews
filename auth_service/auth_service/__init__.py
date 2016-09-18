@@ -1,3 +1,11 @@
+"""
+Author: Wenhua Yang
+Date: 09/18/2016
+
+This is a fake authorization service. Use static values to ensure the complete
+function of this system.
+"""
+
 
 from flask import Flask, Response, request
 import json
@@ -12,7 +20,7 @@ TEST_TOKEN = 'TK123456'
 
 @app.route("/token/<client_id>/<secret>")
 def get_token(client_id, secret):
-    # may have an ip white list
+    # may have an ip white-list
     ip = request.remote_addr
 
     if client_id == TEST_CLIENT_ID and secret == TEST_SECRET:

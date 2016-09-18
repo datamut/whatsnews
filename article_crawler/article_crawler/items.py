@@ -11,12 +11,12 @@ import scrapy
 class ArticleItem(scrapy.Item):
     """News article item definition.
 
-    title - headline of an article
-    author - author of this article
-    timestamp - publish timestamp, time in unix format
-    url - original url of this article
-    summary - summary of this article
-    content - article content, readability content(process by redability)
+    title: headline of an article
+    author: author of this article
+    timestamp: publish timestamp, time in unix format
+    url: original url of this article
+    summary: summary of this article
+    content: article content, readability content(process by redability)
     """
 
     title = scrapy.Field()

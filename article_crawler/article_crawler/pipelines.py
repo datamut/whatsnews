@@ -9,16 +9,35 @@ import json
 
 
 class ContentWriterPipeline(object):
+    # TODO: Merge this with index_crawler's pipelines.
+    """Pipeline used to write article content to output file.
+    Output format is a json for each row. Each row is a record of an article.
+    """
 
-    def __init__(self):
-        self.file = open('article_content.txt', 'a+')
+    def __init__(self, out_file):
+        """
+        Parameters
+        ----------
+        out_file: string
+            output file path, relative path or absolute path is acceptable.
+        """
+        self.file = open(out_file, 'a+')
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        """Set output file varible out_file using ARTICLE_OUT_FILE in settings.
+        """
+        return cls(out_file=crawler.settings.get('ARTICLE_OUT_FILE'))
 
     def process_item(self, item, spider):
+        """Write ArticleItem as json to out_file.
+        """
         self.file.write('{}\n'.format(json.dumps(dict(item))))
         return item
 
 
 class DuplicatesPipeline(object):
+    # TODO: Merge this with index_crawler's pipelines.
 
     def __init__(self):
         self.urls_crawled = set()
