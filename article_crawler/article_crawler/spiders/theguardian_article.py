@@ -5,8 +5,8 @@ Date: 09/17/2016
 
 from readability.readability import Document
 
-from content_crawler.kafka_consume_spider import KafkaConsumeSpider
-from content_crawler.items import ArticleItem
+from article_crawler.kafka_consume_spider import KafkaConsumeSpider
+from article_crawler.items import ArticleItem
 
 
 class TheGuardianArticleSpider(KafkaConsumeSpider):
@@ -20,6 +20,7 @@ class TheGuardianArticleSpider(KafkaConsumeSpider):
         if not author:
             author = meta.xpath('//p[@data-component="meta-byline"]/text()').extract_first()
         timestamp = meta.xpath('//time[@itemprop="datePublished"]/@data-timestamp').extract_first()
+        # TODO: some tile connot fetch, especially for videos
         title = response.css('h1.content__headline[itemprop="headline"] ::text').extract_first()
         if title:
             title = title.strip()
