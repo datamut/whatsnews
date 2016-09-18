@@ -31,7 +31,7 @@ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 -
 ### Producers
 Here we use Kafka connect to import/export file content. We have to type of files need to process. One is crawled urls file, and the other is crawled article content. We start a standalone connect to process these two type of files. *Note that in production environment, there may only have one type of files on a certain node, we need to make corresponding changes for production environment.*
 ```shell
-bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source-whatsnews-index.properties config/connect-file-source-whatsnews-article.properties
+bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source-whatsnews-index.properties config/connect-file-source-whatsnews-article.properties > ../logs/connect-whatsnews.log 2>&1 &
 ```
 
 **TODO: There is a unsolved problem here. Monitored file will be increasing and it may grow to a very large size. But we haven't found a solution to mv/rm this monitored file yet, cause once we mv/rm this file, Kafka connect will stop work.**
