@@ -1,0 +1,32 @@
+db.articles.createIndex(
+    {
+        author: "text",
+        title: "text",
+        summary: "text",
+        content: "text"
+    },
+    {
+        name: "_index_full_text",
+        default_language: "english",
+        weights: {
+            author: 40,
+            title: 30,
+            summary: 20,
+            content: 10
+        },
+        background: true,
+    }
+)
+
+db.articles.createIndex(
+    {
+        url: 1
+    },
+    {
+        name: "_index_url",
+        unique: true
+    }
+)
+
+# db.articles.dropIndex('_index_full_text')
+# db.articles.dropIndex('_index_url')
