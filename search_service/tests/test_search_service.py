@@ -72,7 +72,7 @@ class TestSearchService(unittest.TestCase):
         self.assertEqual(len(res), 0)
         res = self.search('whatsnews')
         self.assertEqual(len(res), 1)
-        self.assertEqual(res[0]['author'], 'Jack')
+        self.assertEqual(res[0]['url'], 'http://example.com')
         # some more assertion here
 
     # TODO: more tests below
