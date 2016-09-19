@@ -11,7 +11,7 @@ class AuthService(object):
     """
 
     def __init__(self, server):
-        # TODO: service descovery rather than designate server
+        # TODO: service discovery rather than designate server
         self.prefix = server
 
     def get_token(self, client_id, secret):
@@ -20,4 +20,5 @@ class AuthService(object):
         return response.json()
 
 
-auth_service = AuthService('http://authsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')
+auth_service = AuthService(
+    'http://authsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')

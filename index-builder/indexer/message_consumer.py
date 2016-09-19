@@ -7,7 +7,6 @@ from kafka import KafkaConsumer
 
 
 class ArticleConsumer(object):
-
     @classmethod
     def new_kafka_consumer(cls):
         # TODO: use configuration

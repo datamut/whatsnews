@@ -9,7 +9,7 @@ import json
 
 
 class ContentWriterPipeline(object):
-    # TODO: Merge this with index_crawler's pipelines.
+    # TODO: Merge this with idxcawler's pipelines.
     """Pipeline used to write article content to output file.
     Output format is a json for each row. Each row is a record of an article.
     """
@@ -37,7 +37,7 @@ class ContentWriterPipeline(object):
 
 
 class DuplicatesPipeline(object):
-    # TODO: Merge this with index_crawler's pipelines.
+    # TODO: Merge this with idxcawler's pipelines.
 
     def __init__(self):
         self.urls_crawled = set()

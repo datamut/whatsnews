@@ -5,8 +5,8 @@ Date: 09/17/2016
 
 from readability.readability import Document
 
-from article_crawler.kafka_consume_spider import KafkaConsumeSpider
-from article_crawler.items import ArticleItem
+from crawler.kafka_consume_spider import KafkaConsumeSpider
+from crawler.items import ArticleItem
 
 
 class TheGuardianArticleSpider(KafkaConsumeSpider):

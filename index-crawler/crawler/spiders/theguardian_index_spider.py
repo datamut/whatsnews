@@ -6,7 +6,7 @@ Date: 09/16/2016
 import re
 from scrapy import Request, Spider
 
-from index_crawler.spiders.spider_base import is_excluded
+from crawler.spiders.spider_base import is_excluded
 
 
 class TheGuardianIndexSpider(Spider):

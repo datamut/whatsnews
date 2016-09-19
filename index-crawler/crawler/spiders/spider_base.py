@@ -3,8 +3,6 @@ Author: Wenhua Yang
 Date: 09/18/2016
 """
 
-import scrapy
-
 
 def is_excluded(url, excluded):
     """Determine whether an url has been excluded. Exclude rules can be

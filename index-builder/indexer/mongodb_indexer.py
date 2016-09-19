@@ -7,7 +7,7 @@ import json
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 
-from message_consumer import ArticleConsumer
+from indexer.message_consumer import ArticleConsumer
 
 
 def run_indexer(hosts):
