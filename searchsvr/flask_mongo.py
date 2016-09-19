@@ -10,6 +10,7 @@ class MongoConnection(object):
 
     def __init__(self):
         self.connection = None
+        self.db = None
 
     def connect_db(self, application):
         if self.connection is None:
