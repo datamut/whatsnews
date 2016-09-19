@@ -11,14 +11,14 @@ from flask import Flask, Response, request
 import json
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 TEST_CLIENT_ID = 'ID123456'
 TEST_SECRET = '123456'
 TEST_TOKEN = 'TK123456'
 
 
-@app.route("/token/<client_id>/<secret>")
+@application.route("/token/<client_id>/<secret>")
 def get_token(client_id, secret):
     # may have an ip white-list
     ip = request.remote_addr
@@ -30,7 +30,7 @@ def get_token(client_id, secret):
     return Response(ret, mimetype='application/json')
 
 
-@app.route("/verify/<client_id>/<token>")
+@application.route("/verify/<client_id>/<token>")
 def verify_token(client_id, token):
     if client_id == TEST_CLIENT_ID and token == TEST_TOKEN:
         ret = json.dumps({'valid': True})

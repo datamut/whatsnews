@@ -3,6 +3,8 @@ Author: Wenhua Yang
 Date: 09/18/2016
 """
 
-from auth_service import app
+from auth_service import application
 
-app.run(port=7301, debug=False)
+
+if __name__ == '__main__':
+	application.run()

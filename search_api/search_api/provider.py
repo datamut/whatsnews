@@ -29,5 +29,5 @@ class SearchService(object):
         return response.json()
 
 
-auth_service = AuthService('http://localhost:7301')
-search_service = SearchService('http://localhost:7801')
+auth_service = AuthService('http://auth-service-env.tki4he8j8z.us-west-2.elasticbeanstalk.com')
+search_service = SearchService('http://search-service-env.tyhcbmmaju.us-west-2.elasticbeanstalk.com')

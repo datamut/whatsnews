@@ -3,6 +3,8 @@ Author: Wenhua Yang
 Date: 09/18/2016
 """
 
-from search_service import app
+from search_service import application
 
-app.run(port=7801, debug=False)
+
+if __name__ == '__main__':
+    application.run()

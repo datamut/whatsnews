@@ -11,11 +11,11 @@ class MongoConnection(object):
     def __init__(self):
         self.connection = None
 
-    def connect_db(self, app):
+    def connect_db(self, application):
         if self.connection is None:
-            hosts = app.config['MONGO_HOSTS']
+            hosts = application.config['MONGO_HOSTS']
             self.connection = MongoClient(host=hosts)
-            db_name = app.config['MONGO_DBNAME']
+            db_name = application.config['MONGO_DBNAME']
             self.db = self.connection[db_name]
         return self.db
 

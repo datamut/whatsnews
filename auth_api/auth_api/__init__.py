@@ -13,10 +13,10 @@ import json
 from auth_api.provider import auth_service
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
-@app.route("/token/<client_id>/<secret>")
+@application.route("/token/<client_id>/<secret>")
 def get_token(client_id, secret):
     """Generate token for user by calling auth_service.
 

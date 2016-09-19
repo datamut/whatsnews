@@ -9,10 +9,10 @@ import json
 from search_api.provider import auth_service, search_service
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
-@app.route('/search/<client_id>/<token>', methods=['POST'])
+@application.route('/search/<client_id>/<token>', methods=['POST'])
 def search(client_id, token):
     # TODO: retry when request failed for each service
 

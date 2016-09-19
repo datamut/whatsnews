@@ -11,11 +11,9 @@ from search_service.flask_mongo import MongoConnection
 
 
 mongo_connection = MongoConnection()
-app = Flask(__name__)
-# MONGODB_HOSTS format: mongodb://[username:password@]host1[:port1][,
-#    host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-app.config['MONGO_HOSTS'] = 'mongodb://localhost:27017'
-app.config['MONGO_DBNAME'] = 'whatsnews'
+application = Flask(__name__)
+application.config['MONGO_HOSTS'] = 'mongodb://ureadonly:u1s2e3r@aws-us-east-1-portal.9.dblayer.com:15345,aws-us-east-1-portal.6.dblayer.com:15345/whatsnews'
+application.config['MONGO_DBNAME'] = 'whatsnews'
 
 
 def get_db():
@@ -23,11 +21,11 @@ def get_db():
     this context yet.
     """
     if not hasattr(g, 'mongo_db'):
-        g.mongo_db = mongo_connection.connect_db(app)
+        g.mongo_db = mongo_connection.connect_db(application)
     return g.mongo_db
 
 
-@app.route('/search', methods=['POST'])
+@application.route('/search', methods=['POST'])
 def search():
     db = get_db()
     query = request.form['query']
@@ -39,6 +37,6 @@ def search():
     return Response(json.dumps(result), mimetype='application/json')
 
 
-@app.teardown_appcontext
+@application.teardown_appcontext
 def _teardown(exception):
     mongo_connection.close()
