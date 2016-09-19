@@ -13,22 +13,21 @@ import unittest
 
 
 class TestSearchService(unittest.TestCase):
-
     def init_db(self):
         """Initialize database, create index.
         """
         mongo = pymongo.MongoClient(host=self.dbhosts)
         mongo[self.dbname].articles.create_index(
-                [
-                    ("author", pymongo.TEXT),
-                    ("title", pymongo.TEXT),
-                    ("summary", pymongo.TEXT),
-                    ("content", pymongo.TEXT),
-                ],
-                background=True)
+            [
+                ("author", pymongo.TEXT),
+                ("title", pymongo.TEXT),
+                ("summary", pymongo.TEXT),
+                ("content", pymongo.TEXT),
+            ],
+            background=True)
         mongo[self.dbname].articles.create_index(
-                [("url", pymongo.ASCENDING)],
-                unique=True)
+            [("url", pymongo.ASCENDING)],
+            unique=True)
         return mongo, mongo[self.dbname]
 
     def setUp(self):
@@ -43,8 +42,8 @@ class TestSearchService(unittest.TestCase):
         self.dbname = 'db_whatsnews_{}'.format(int(random.random() * 10000))
         self.dbport = '27217'
         self.dbhosts = 'mongodb://localhost:{}'.format(self.dbport)
-        subprocess.Popen(['mongod', '--dbpath', self.dbpath, '--port', \
-                         self.dbport], stdout=subprocess.PIPE, \
+        subprocess.Popen(['mongod', '--dbpath', self.dbpath, '--port',
+                          self.dbport], stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
         self.mongo, self.db = self.init_db()
 
@@ -65,9 +64,11 @@ class TestSearchService(unittest.TestCase):
 
     def test_search(self):
         self.db.articles.insert_one({'title': 'whatsnews search engine',
-            'author': 'Jack', 'url': 'http://example.com',
-            'summary': 'A sample article', 'timestamp': '1237977662000',
-            'content': 'A longer content of this article'})
+                                     'author': 'Jack',
+                                     'url': 'http://example.com',
+                                     'summary': 'A sample article',
+                                     'timestamp': '1237977662000',
+                                     'content': 'longer content article'})
         res = self.search('ocean')
         self.assertEqual(len(res), 0)
         res = self.search('whatsnews')
