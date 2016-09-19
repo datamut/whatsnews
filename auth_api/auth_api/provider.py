@@ -20,4 +20,4 @@ class AuthService(object):
         return response.json()
 
 
-auth_service = AuthService('http://auth-service-env.tki4he8j8z.us-west-2.elasticbeanstalk.com')
+auth_service = AuthService('http://authsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')
