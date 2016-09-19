@@ -29,10 +29,11 @@ def get_db():
 def search():
     db = get_db()
     query = request.form['query']
+    limit = int(request.form['limit'])
     cursor = db.articles.find(
             {'$text': {'$search': query}},
             {'_id': 0, 'score': {'$meta': 'textScore'}}
-        ).sort([('score', {'$meta': 'textScore'})]).limit(10)
+        ).sort([('score', {'$meta': 'textScore'})]).limit(limit)
     result = list(cursor)
     return Response(json.dumps(result), mimetype='application/json')
 

@@ -22,9 +22,9 @@ class SearchService(object):
     def __init__(self, server):
         self.prefix = server
 
-    def search(self, query):
+    def search(self, query, limit):
         url = '{}/search'.format(self.prefix)
-        data = {'query': query}
+        data = {'query': query, 'limit': limit}
         response = requests.post(url, data=data)
         return response.json()
 

@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Search | What's News</title>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.1.0.min.js') }}"></script>
+        <style type="text/css">
+            html {
+                padding: 0;
+                margin: 0;
+                font-size: 14px;
+            }
+
+            #keyword {
+                width: 300px;
+                height: 30px;
+                line-height: 20px;
+            }
+
+            #limit {
+                width: 50px;
+                height: 30px;
+                line-height: 20px;
+            }
+
+            #search {
+                width: 80px;
+                height: 30px;
+                line-height: 30px;
+            }
+
+            .table table {
+                width: 960px;
+                border: solid 1px #999;
+            }
+            .table table tr, .table table tr td {
+                border: solid 1px #999;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="main">
+            <input id="keyword" type="text" value="" placeholder="input your search words here ..." />
+            <input id="limit" type="text" value="10" placeholder="10" />
+            <input id="search" type="button" value="search">
+        </div>
+
+        <div class="table">
+
+        </div>
+
+        <script type="text/javascript">
+             $(function() {
+                 function init() {
+                     $("#search").bind('click', doSearch);
+                 }
+
+                 function doSearch() {
+                     var keywords = $("#keyword").val();
+                     var limit = $("#limit").val();
+                     if(keyword == "") {
+                         alert("Search keywords are required.");
+                     }
+                     try {
+                         var count = parseInt(limit);
+                         if(count > 100 || count < 1) {
+                             alert('Limit must in [1, 100]');
+                         }
+                         $.post("/search/ID123456/TK123456",
+                            {query: keywords, limit: count},
+                            function(data) {
+                                if(data.hasOwnProperty('error_code')) {
+                                    alert(data.error_msg);
+                                } else {
+                                    render_data(data);
+                                }
+                            });
+                     } catch (e) {
+                         alert('Limit should be an integer.');
+                         $("#limit").val("10");
+                     }
+                 }
+
+                 function render_data(data) {
+                     var n = data.length;
+                     var content = ["<table>"];
+                     for(var i = 0; i < n; i++) {
+                         var item = data[i];
+                         var line = "<tr><td>" + item.title + "</td><td>"
+                             + item.author + "</td><td>" + item.timestamp
+                             + "</td><td>" + item.summary + "</td><td>"
+                             + item.content + "</td></tr>";
+                         content.push(line);
+                     }
+                     content.push("</table>");
+                     $(".table").html(content.join(""));
+                 }
+
+                init();
+             });
+        </script>
+    </body>
+
+<html>
