@@ -7,7 +7,6 @@ import requests
 
 
 class AuthService(object):
-
     def __init__(self, server):
         self.prefix = server
 
@@ -18,7 +17,6 @@ class AuthService(object):
 
 
 class SearchService(object):
-
     def __init__(self, server):
         self.prefix = server
 
@@ -29,5 +27,7 @@ class SearchService(object):
         return response.json()
 
 
-auth_service = AuthService('http://authsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')
-search_service = SearchService('http://searchsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')
+auth_service = AuthService(
+    'http://authsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')
+search_service = SearchService(
+    'http://searchsvr.kc7ctmpd2z.us-west-2.elasticbeanstalk.com')

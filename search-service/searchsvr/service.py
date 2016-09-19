@@ -3,13 +3,16 @@ Author: Wenhua Yang
 Date: 09/19/2016
 """
 
-from flask import Flask, Response, request, g
 import json
+
+from flask import Flask, Response, request, g
 
 from searchsvr.flask_mongo import MongoConnection
 
 mongo_connection = MongoConnection()
+
 application = Flask(__name__)
+
 application.config['MONGO_HOSTS'] = 'mongodb://{}@{},{}/whatsnews'.format(
     'ureadonly:u1s2e3r', 'aws-us-east-1-portal.9.dblayer.com:15345',
     'aws-us-east-1-portal.6.dblayer.com:15345'
