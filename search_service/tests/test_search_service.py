@@ -6,7 +6,6 @@ Date: 09/19/2016
 import json
 import os
 import random
-import requests
 import subprocess
 import pymongo
 import unittest
@@ -16,8 +15,8 @@ class TestSearchService(unittest.TestCase):
     def init_db(self):
         """Initialize database, create index.
         """
-        mongo = pymongo.MongoClient(host=self.dbhosts)
-        mongo[self.dbname].articles.create_index(
+        mongo = pymongo.MongoClient(host=self.db_hosts)
+        mongo[self.db_name].articles.create_index(
             [
                 ("author", pymongo.TEXT),
                 ("title", pymongo.TEXT),
@@ -25,41 +24,41 @@ class TestSearchService(unittest.TestCase):
                 ("content", pymongo.TEXT),
             ],
             background=True)
-        mongo[self.dbname].articles.create_index(
+        mongo[self.db_name].articles.create_index(
             [("url", pymongo.ASCENDING)],
             unique=True)
-        return mongo, mongo[self.dbname]
+        return mongo, mongo[self.db_name]
 
     def setUp(self):
         """Setup a new environment. Create db and fill up data.
         """
-        self.dbpath = '/tmp/dbpath_test_search_service'
-        if not os.path.exists(self.dbpath):
-            p = subprocess.Popen(['mkdir', self.dbpath], stdout=subprocess.PIPE,
+        db_path = '/tmp/dbpath_test_search_service'
+        if not os.path.exists(db_path):
+            p = subprocess.Popen(['mkdir', db_path], stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
             # TODO: deal with error
             out, err = p.communicate()
-        self.dbname = 'db_whatsnews_{}'.format(int(random.random() * 10000))
-        self.dbport = '27217'
-        self.dbhosts = 'mongodb://localhost:{}'.format(self.dbport)
-        subprocess.Popen(['mongod', '--dbpath', self.dbpath, '--port',
-                          self.dbport], stdout=subprocess.PIPE,
+        self.db_name = 'db_whatsnews_{}'.format(int(random.random() * 10000))
+        db_port = '27217'
+        self.db_hosts = 'mongodb://localhost:{}'.format(db_port)
+        subprocess.Popen(['mongod', '--dbpath', db_path, '--port',
+                          db_port], stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
         self.mongo, self.db = self.init_db()
 
         from search_service import search
-        search.app.config['TESTING'] = True
-        search.app.config['MONGO_HOSTS'] = self.dbhosts
-        search.app.config['MONGO_DBNAME'] = self.dbname
-        self.client = search.app.test_client()
+        search.application.config['TESTING'] = True
+        search.application.config['MONGO_HOSTS'] = self.db_hosts
+        search.application.config['MONGO_DBNAME'] = self.db_name
+        self.client = search.application.test_client()
 
     def tearDown(self):
         """Remove db created for test.
         """
-        self.mongo.drop_database(self.dbname)
+        self.mongo.drop_database(self.db_name)
 
     def search(self, query):
-        res = self.client.post('/search', data={'query': query})
+        res = self.client.post('/search', data={'query': query, 'limit': 10})
         return json.loads(res.data.decode('utf-8'))
 
     def test_search(self):
