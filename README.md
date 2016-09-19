@@ -48,6 +48,8 @@ Requirement details of each sub project can be found in its root directory.
 >>> ...
 ```
 
+**A very basic web interface has been built for an easier interact:**[Search on What's News](http://searchapi.kc7ctmpd2z.us-west-2.elasticbeanstalk.com)
+
 
 ### Project flowchart
 *Coming soon*
