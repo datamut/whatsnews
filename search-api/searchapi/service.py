@@ -5,11 +5,27 @@ Date: 09/18/2016
 
 from flask import Flask, Response, request, render_template
 import json
+import os
 
-from searchapi.provider import auth_service, search_service
+from searchapi.provider import AuthService, SearchService
 
 
 application = Flask(__name__)
+
+auth_service_url = os.environ.get('AUTH_SERVICE_URL', None)
+search_service_url = os.environ.get('SEARCH_SERVICE_URL', None)
+if auth_service_url is None:
+    assert False, 'Environment variable AUTH_SERVICE_URL not found'
+if search_service_url is None:
+    assert False, 'Environment variable SEARCH_SERVICE_URL not found'
+
+application.config.update(dict(
+    AUTH_SERVICE_URL=auth_service_url,
+    SEARCH_SERVICE_URL=search_service_url
+))
+
+auth_service = AuthService(application)
+search_service = SearchService(application)
 
 
 @application.route('/')

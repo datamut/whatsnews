@@ -5,9 +5,10 @@ Date: 09/19/16
 """
 
 import json
+
 import pymongo
 
-from tests import BaseTestCase
+from searchsvr.tests import BaseTestCase
 
 
 class TestSearchService(BaseTestCase):
