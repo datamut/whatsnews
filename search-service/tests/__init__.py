@@ -48,7 +48,6 @@ class BaseTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.db_client = db_client
-        cls.db_name = db_name
         cls.db = db
 
         from searchsvr import service
