@@ -29,11 +29,11 @@ def parse_host_port(url):
 auth_host, auth_port = parse_host_port(auth_url)
 search_host, search_port = parse_host_port(search_url)
 
-auth_svr_app = Flask(__name__)
-search_svr_app = Flask(__name__)
+auth_app = Flask(__name__)
+search_app = Flask(__name__)
 
 
-@auth_svr_app.route('/verify/<client_id>/<token>')
+@auth_app.route('/verify/<client_id>/<token>')
 def auth_svr(client_id, token):
     if client_id == 'ID123456' and token == 'TK123456':
         ret = json.dumps({'valid': True})
@@ -43,7 +43,7 @@ def auth_svr(client_id, token):
     return Response(ret, mimetype='application/json')
 
 
-@search_svr_app.route('/search', methods=['POST'])
+@search_app.route('/search', methods=['POST'])
 def search_svr():
     if 'query' not in request.form:
         return json.dumps(
@@ -90,18 +90,25 @@ def search_svr():
     return Response(json.dumps(result), mimetype='application/json')
 
 
-mock_authsvr = FlaskLoopback(auth_svr_app)
-mock_searchsvr = FlaskLoopback(search_svr_app)
+class MockServer(object):
+    def __init__(self, app, host, port):
+        self.app = app
+        self.host = host
+        self.port = port
+        self.mock_server = FlaskLoopback(app)
+
+    def get_server(self):
+        return self.mock_server.on((self.host, self.port))
+
+
+auth_mock = MockServer(auth_app, auth_host, auth_port)
+search_mock = MockServer(search_app, search_host, search_port)
 
 
 class BaseTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.mock_authsvr = mock_authsvr
-        cls.mock_searchsvr = mock_searchsvr
-        cls.auth_addr = (auth_host, auth_port)
-        cls.search_addr = (search_host, search_port)
         cls.app_client = app_client
 
 
@@ -116,3 +123,12 @@ def load_test_suite():
 class BaseTestRunner(unittest.TextTestRunner):
     def run(self, test):
         return super(BaseTestRunner, self).run(test)
+
+
+def use_mock(mock_server):
+    def mock_decorator(func):
+        def wrapper(*args, **kwargs):
+            with mock_server.get_server():
+                func(*args, **kwargs)
+        return wrapper
+    return mock_decorator
