@@ -3,9 +3,8 @@ Author: Wenhua Yang
 Date: 09/21/2016
 """
 
-from flask import Flask, Response, request
+from flask import Flask, request, jsonify
 from flask_loopback.flask_loopback import FlaskLoopback
-import json
 import unittest
 from urllib.parse import urlparse
 
@@ -26,6 +25,7 @@ def parse_host_port(url):
     _port = int(_port)
     return _host, _port
 
+
 auth_host, auth_port = parse_host_port(auth_url)
 search_host, search_port = parse_host_port(search_url)
 
@@ -36,28 +36,28 @@ search_app = Flask(__name__)
 @auth_app.route('/verify/<client_id>/<token>')
 def auth_svr(client_id, token):
     if client_id == 'ID123456' and token == 'TK123456':
-        ret = json.dumps({'valid': True})
+        ret = {'valid': True}
     else:
-        ret = json.dumps(
-            {'error_code': 3002, 'error_msg': 'client_id/token verify failed'})
-    return Response(ret, mimetype='application/json')
+        ret = {'error_code': 3002,
+               'error_msg': 'client_id/token verify failed'}
+    return jsonify(ret)
 
 
 @search_app.route('/search', methods=['POST'])
 def search_svr():
     if 'query' not in request.form:
-        return json.dumps(
+        return jsonify(
             {'error_code': 4001, 'error_msg': 'query cannot be None or empty'})
 
     query = request.form['query']
 
     if query is None or len(query) == 0:
-        return json.dumps(
+        return jsonify(
             {'error_code': 4001, 'error_msg': 'query cannot be None or empty'})
 
     limit = int(request.form['limit'])
     if limit <= 0:
-        return json.dumps(
+        return jsonify(
             {'error_code': 4002, 'error_msg': 'limit must be grater than 0'})
 
     data = [
@@ -87,7 +87,7 @@ def search_svr():
         }
     ]
     result = data[:limit]
-    return Response(json.dumps(result), mimetype='application/json')
+    return jsonify(result)
 
 
 class MockServer(object):
@@ -106,7 +106,6 @@ search_mock = MockServer(search_app, search_host, search_port)
 
 
 class BaseTestCase(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.app_client = app_client
@@ -130,5 +129,7 @@ def use_mock(mock_server):
         def wrapper(*args, **kwargs):
             with mock_server.get_server():
                 func(*args, **kwargs)
+
         return wrapper
+
     return mock_decorator

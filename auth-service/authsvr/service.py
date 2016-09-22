@@ -6,8 +6,7 @@ This is a fake authorization service. Use static values to ensure the complete
 function of this system.
 """
 
-from flask import Flask, Response
-import json
+from flask import Flask, jsonify
 
 application = Flask(__name__)
 
@@ -22,18 +21,17 @@ def get_token(client_id, secret):
     # ip = request.remote_addr
 
     if client_id == TEST_CLIENT_ID and secret == TEST_SECRET:
-        ret = json.dumps({'token': TEST_TOKEN, 'expires_in': 86400})
+        ret = {'token': TEST_TOKEN, 'expires_in': 86400}
     else:
-        ret = json.dumps(
-            {'error_code': 3001, 'error_msg': 'invalid client_id or secret'})
-    return Response(ret, mimetype='application/json')
+        ret = {'error_code': 3001, 'error_msg': 'invalid client_id or secret'}
+    return jsonify(ret)
 
 
 @application.route("/verify/<client_id>/<token>")
 def verify_token(client_id, token):
     if client_id == TEST_CLIENT_ID and token == TEST_TOKEN:
-        ret = json.dumps({'valid': True})
+        ret = {'valid': True}
     else:
-        ret = json.dumps(
-            {'error_code': 3002, 'error_msg': 'client_id/token verify failed'})
-    return Response(ret, mimetype='application/json')
+        ret = {'error_code': 3002,
+               'error_msg': 'client_id/token verify failed'}
+    return jsonify(ret)

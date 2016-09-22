@@ -3,8 +3,7 @@ Author: Wenhua Yang
 Date: 09/19/2016
 """
 
-from flask import Flask, Response, request, g
-import json
+from flask import Flask, request, g, jsonify
 import os
 
 from searchsvr.flask_mongo import MongoConnection
@@ -45,7 +44,7 @@ def search():
         {'_id': 0, 'score': {'$meta': 'textScore'}}
     ).sort([('score', {'$meta': 'textScore'})]).limit(limit)
     result = list(cursor)
-    return Response(json.dumps(result), mimetype='application/json')
+    return jsonify(result)
 
 
 @application.teardown_appcontext

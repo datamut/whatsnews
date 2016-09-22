@@ -13,7 +13,7 @@ class TestSearchApi(BaseTestCase):
     def search(self, client_id, token, query, limit=10):
         res = self.app_client.post('/search/{}/{}'.format(client_id, token),
                                    data={'query': query, 'limit': limit})
-        return json.loads(res.data.decode('utf-8'))
+        return json.loads(res.get_data(as_text=True))
 
     @use_mock(auth_mock)
     @use_mock(search_mock)
