@@ -6,6 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import json
+from scrapy.exceptions import DropItem
 
 
 class ContentWriterPipeline(object):
