@@ -3,9 +3,8 @@ Author: Wenhua Yang
 Date: 09/19/2016
 """
 
-import json
-
-from flask import Flask, Response, request, g
+from flask import Flask, request, g, jsonify
+import os
 
 from searchsvr.flask_mongo import MongoConnection
 
@@ -13,11 +12,15 @@ mongo_connection = MongoConnection()
 
 application = Flask(__name__)
 
-application.config['MONGO_HOSTS'] = 'mongodb://{}@{},{}/whatsnews'.format(
-    'ureadonly:u1s2e3r', 'aws-us-east-1-portal.9.dblayer.com:15345',
-    'aws-us-east-1-portal.6.dblayer.com:15345'
-)
-application.config['MONGO_DBNAME'] = 'whatsnews'
+db_hosts = os.environ.get('MONGODB_HOSTS', None)
+db_name = os.environ.get('MONGODB_DBNAME', None)
+assert db_hosts is not None, 'Environment variable MONGODB_HOSTS not found'
+assert db_name is not None, 'Environment variable MONGODB_DBNAME not found'
+
+application.config.update(dict(
+    MONGODB_HOSTS=db_hosts,
+    MONGODB_DBNAME=db_name
+))
 
 
 def get_db():
@@ -39,7 +42,7 @@ def search():
         {'_id': 0, 'score': {'$meta': 'textScore'}}
     ).sort([('score', {'$meta': 'textScore'})]).limit(limit)
     result = list(cursor)
-    return Response(json.dumps(result), mimetype='application/json')
+    return jsonify(result)
 
 
 @application.teardown_appcontext

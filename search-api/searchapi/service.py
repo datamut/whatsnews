@@ -3,13 +3,28 @@ Author: Wenhua Yang
 Date: 09/18/2016
 """
 
-from flask import Flask, Response, request, render_template
-import json
+from flask import Flask, request, render_template, jsonify
+import os
 
-from searchapi.provider import auth_service, search_service
+from searchapi.provider import AuthService, SearchService
 
 
 application = Flask(__name__)
+
+auth_service_url = os.environ.get('AUTH_SERVICE_URL', None)
+search_service_url = os.environ.get('SEARCH_SERVICE_URL', None)
+assert auth_service_url is not None, \
+    'Environment variable AUTH_SERVICE_URL not found'
+assert search_service_url is not None, \
+    'Environment variable SEARCH_SERVICE_URL not found'
+
+application.config.update(dict(
+    AUTH_SERVICE_URL=auth_service_url,
+    SEARCH_SERVICE_URL=search_service_url
+))
+
+auth_service = AuthService(application)
+search_service = SearchService(application)
 
 
 @application.route('/')
@@ -28,7 +43,7 @@ def search(client_id, token):
 
     auth_resp = auth_service.verify(client_id, token)
     if 'error_code' in auth_resp:
-        return Response(json.dumps(auth_resp), mimetype='application/json')
+        return jsonify(auth_resp)
 
     query = request.form['query']
     limit = 10
@@ -38,5 +53,5 @@ def search(client_id, token):
         except ValueError:
             pass  # TODO: deal with error here
 
-    search_resp = search_service.search(query, limit)
-    return Response(json.dumps(search_resp), mimetype='application/json')
+    result = search_service.search(query, limit)
+    return jsonify(result)

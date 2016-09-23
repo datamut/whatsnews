@@ -14,9 +14,9 @@ class MongoConnection(object):
 
     def connect_db(self, application):
         if self.connection is None:
-            hosts = application.config['MONGO_HOSTS']
+            hosts = application.config['MONGODB_HOSTS']
             self.connection = MongoClient(host=hosts)
-            db_name = application.config['MONGO_DBNAME']
+            db_name = application.config['MONGODB_DBNAME']
             self.db = self.connection[db_name]
         return self.db
 

@@ -6,10 +6,6 @@ Date: 09/17/2016
 import kafka
 import scrapy
 
-KAFKA_TOPIC_ID = 'KAFKA_TOPIC_ID'
-KAFKA_GROUP_ID = 'KAFKA_GROUP_ID'
-KAFKA_BOOTSTRAP_SERVERS = 'KAFKA_BOOTSTRAP_SERVERS'
-
 
 class KafkaConsumeSpider(scrapy.Spider):
     """This abstract spider integrate Kafka consumer with scrapy.Spider.
@@ -33,22 +29,13 @@ class KafkaConsumeSpider(scrapy.Spider):
         Raise ValueError when topic, group, or bootstrap_servers is not
         specified.
         """
-        topic = settings.get(KAFKA_TOPIC_ID, None)
-        if not topic:
-            raise ValueError('{} setting is required'.format(KAFKA_TOPIC_ID))
-
-        group = settings.get(KAFKA_GROUP_ID, None)
-        if not group:
-            raise ValueError('{} setting is required'.format(KAFKA_GROUP_ID))
-
-        servers = settings.get(KAFKA_BOOTSTRAP_SERVERS, None)
-        if not servers:
-            raise ValueError(
-                '{} setting is required'.format(KAFKA_BOOTSTRAP_SERVERS))
-        bootstrap_servers = servers.split(',')
+        topic = settings.get('KAFKA_TOPIC_ID')
+        group = settings.get('KAFKA_GROUP_ID')
+        servers = settings.get('KAFKA_BOOTSTRAP_SERVERS')
+        kafka_servers = servers.split(',')
 
         self.consumer = kafka.KafkaConsumer(topic, group_id=group,
-                                            bootstrap_servers=bootstrap_servers)
+                                            bootstrap_servers=kafka_servers)
         self.crawler.signals.connect(self.spider_idle,
                                      scrapy.signals.spider_idle)
         self.crawler.signals.connect(self.item_scraped,
@@ -64,7 +51,8 @@ class KafkaConsumeSpider(scrapy.Spider):
                 for record in msg_list:
                     url = record.value
                     if url:
-                        url = url.decode()[1:-1]  # TODO: remove " from kafka?
+                        url = url.decode()[
+                              1:-1]  # TODO: remove " from kafka-conf?
                         requests = self.make_requests_from_url(url)
                         if requests:
                             self.crawler.engine.crawl(requests, spider=self)

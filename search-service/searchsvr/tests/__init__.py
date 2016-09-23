@@ -7,17 +7,17 @@ Init mongodb and run all test cases.
 directory and there are no test suite in it.
 """
 
-import os
 import unittest
 import pymongo
 
 
-db_hosts = os.environ.get('TEST_MONGO_HOSTS', None)
-db_name = os.environ.get('TEST_MONGO_DBNAME', None)
-if db_hosts is None:
-    assert False, 'variable TEST_MONGO_HOSTS is required'
-if db_name is None:
-    assert False, 'variable TEST_MONGO_DBNAME is required'
+from searchsvr import application
+
+application.testing = True
+app_client = application.test_client()
+
+db_hosts = application.config['MONGODB_HOSTS']
+db_name = application.config['MONGODB_DBNAME']
 
 
 def init_db(_db_hosts, _db_name):
@@ -48,19 +48,13 @@ class BaseTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.db_client = db_client
-        cls.db_name = db_name
         cls.db = db
-
-        from searchsvr import service
-        service.application.config['TESTING'] = True
-        service.application.config['MONGO_HOSTS'] = db_hosts
-        service.application.config['MONGO_DBNAME'] = db_name
-        cls.app_client = service.application.test_client()
+        cls.app_client = app_client
 
 
 def load_test_suite():
     # load all test cases, use default name tests
-    all_tests = unittest.defaultTestLoader.discover('tests')
+    all_tests = unittest.defaultTestLoader.discover('searchsvr.tests')
     test_suite = unittest.TestSuite()
     test_suite.addTests(all_tests)
     return test_suite
