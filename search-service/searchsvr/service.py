@@ -14,10 +14,8 @@ application = Flask(__name__)
 
 db_hosts = os.environ.get('MONGODB_HOSTS', None)
 db_name = os.environ.get('MONGODB_DBNAME', None)
-if db_hosts is None:
-    assert False, 'Environment variable MONGODB_HOSTS not found'
-if db_name is None:
-    assert False, 'Environment variable MONGODB_DBNAME not found'
+assert db_hosts is not None, 'Environment variable MONGODB_HOSTS not found'
+assert db_name is not None, 'Environment variable MONGODB_DBNAME not found'
 
 application.config.update(dict(
     MONGODB_HOSTS=db_hosts,

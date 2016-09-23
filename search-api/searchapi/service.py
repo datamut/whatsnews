@@ -13,10 +13,10 @@ application = Flask(__name__)
 
 auth_service_url = os.environ.get('AUTH_SERVICE_URL', None)
 search_service_url = os.environ.get('SEARCH_SERVICE_URL', None)
-if auth_service_url is None:
-    assert False, 'Environment variable AUTH_SERVICE_URL not found'
-if search_service_url is None:
-    assert False, 'Environment variable SEARCH_SERVICE_URL not found'
+assert auth_service_url is not None, \
+    'Environment variable AUTH_SERVICE_URL not found'
+assert search_service_url is not None, \
+    'Environment variable SEARCH_SERVICE_URL not found'
 
 application.config.update(dict(
     AUTH_SERVICE_URL=auth_service_url,

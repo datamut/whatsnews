@@ -9,7 +9,7 @@ import json
 from searchapi.tests import BaseTestCase, use_mock, auth_mock, search_mock
 
 
-class TestSearchApi(BaseTestCase):
+class TestSearchAPI(BaseTestCase):
     def search(self, client_id, token, query, limit=10):
         res = self.app_client.post('/search/{}/{}'.format(client_id, token),
                                    data={'query': query, 'limit': limit})
