@@ -9,6 +9,9 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+import os
+
+
 BOT_NAME = 'crawler'
 
 SPIDER_MODULES = ['crawler.spiders']
@@ -90,4 +93,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-INDEX_OUT_FILE = '/data/project/whatsnews/index_out/crawl_urls.txt'
+INDEX_OUT_FILE = os.environ.get('OUT_FILE', None)
+assert INDEX_OUT_FILE is not None, 'Environment variable OUT_FILE not found'

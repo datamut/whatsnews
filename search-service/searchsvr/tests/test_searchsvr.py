@@ -16,7 +16,7 @@ class TestSearchService(BaseTestCase):
     def search(self, query, limit=20):
         res = self.app_client.post('/search',
                                    data={'query': query, 'limit': limit})
-        return json.loads(res.data.decode('utf-8'))
+        return json.loads(res.get_data(as_text=True))
 
     def test_empty(self):
         res = self.search('article')

@@ -3,8 +3,7 @@ Author: Wenhua Yang
 Date: 09/19/2016
 """
 
-from flask import Flask, Response, request, g
-import json
+from flask import Flask, request, g, jsonify
 import os
 
 from searchsvr.flask_mongo import MongoConnection
@@ -15,10 +14,8 @@ application = Flask(__name__)
 
 db_hosts = os.environ.get('MONGODB_HOSTS', None)
 db_name = os.environ.get('MONGODB_DBNAME', None)
-if db_hosts is None:
-    assert False, 'Environment variable MONGODB_HOSTS not found'
-if db_name is None:
-    assert False, 'Environment variable MONGODB_DBNAME not found'
+assert db_hosts is not None, 'Environment variable MONGODB_HOSTS not found'
+assert db_name is not None, 'Environment variable MONGODB_DBNAME not found'
 
 application.config.update(dict(
     MONGODB_HOSTS=db_hosts,
@@ -45,7 +42,7 @@ def search():
         {'_id': 0, 'score': {'$meta': 'textScore'}}
     ).sort([('score', {'$meta': 'textScore'})]).limit(limit)
     result = list(cursor)
-    return Response(json.dumps(result), mimetype='application/json')
+    return jsonify(result)
 
 
 @application.teardown_appcontext

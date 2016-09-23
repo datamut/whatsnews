@@ -14,15 +14,15 @@ do not contain any thing related with this test.
 
 ### Sub modules/systems/services
 This project consists of several different sub systems as below:
-+ index_crawler - to crawl article urls from news websites
-+ article_crawler - to crawl article content using urls fetched above
-+ index_builder - to build index to mongodb/search-engine for full text search
-+ auth_api - API used to grant privilege of using other APIs like search_api for external users
-+ auth_service - centralized authorization service, called by auth_api and other APIs
-+ search_api - search interface for users
-+ search_service - service in charge of full text search on news content in search engine mentioned above
-+ query_service - service used to process user's input queries, e.g. extend relevant queries, change queries, etc.
-+ rank_service - service used for sorting search result, e.g. sort according user's profile/preferences
++ index-crawler - to crawl article urls from news websites
++ article-crawler - to crawl article content using urls fetched above
++ index-builder - to build index to mongodb/search-engine for full text search
++ auth-api - API used to grant privilege of using other APIs like search_api for external users
++ auth-service - centralized authorization service, called by auth_api and other APIs
++ search-api - search interface for users
++ search-service - service in charge of full text search on news content in search engine mentioned above
++ query-service - service used to process user's input queries, e.g. extend relevant queries, change queries, etc.
++ rank-service - service used for sorting search result, e.g. sort according user's profile/preferences
 
 A flowchart will be provided for better understanding of this project.
 

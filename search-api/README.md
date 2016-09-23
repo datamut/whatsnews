@@ -6,3 +6,8 @@
 >>> requests.post('http://searchapi.kc7ctmpd2z.us-west-2.elasticbeanstalk.com/search/ID123456/TK123456', data={'query': 'Guinness World Records'}).json()[0]
 >>> ...
 ```
+
+### Run Test
+```shell
+AUTH_SERVICE_URL=http://a.com:29371 SEARCH_SERVICE_URL=http://b.com:28391 python run_tests.py
+```

@@ -9,6 +9,9 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+import os
+
+
 BOT_NAME = 'crawler'
 
 SPIDER_MODULES = ['crawler.spiders']
@@ -90,8 +93,17 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-KAFKA_TOPIC_ID = 'whatsnews_topic_index'
-KAFKA_GROUP_ID = 'whatsnews_group_index'
-KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
+KAFKA_TOPIC_ID = os.environ.get('KAFKA_TOPIC_ID', None)
+assert KAFKA_TOPIC_ID is not None, \
+    'Environment variable KAFKA_TOPIC_ID not found'
 
-ARTICLE_OUT_FILE = '/data/project/whatsnews/article_out/crawl_articles.txt'
+KAFKA_GROUP_ID = os.environ.get('KAFKA_GROUP_ID', None)
+assert KAFKA_GROUP_ID is not None, \
+    'Environment variable KAFKA_GROUP_ID not found'
+
+KAFKA_BOOTSTRAP_SERVERS = os.environ.get('KAFKA_BOOTSTRAP_SERVERS', None)
+assert KAFKA_BOOTSTRAP_SERVERS is not None, \
+    'Environment variable KAFKA_BOOTSTRAP_SERVERS not found'
+
+ARTICLE_OUT_FILE = os.environ.get('OUT_FILE', None)
+assert ARTICLE_OUT_FILE is not None, 'Environment variable OUT_FILE not found'
