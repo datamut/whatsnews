@@ -52,4 +52,4 @@ Requirement details of each sub project can be found in its root directory.
 
 
 ### Project flowchart
-*Coming soon*
+![Flow-Chart](https://github.com/geekoala/whatsnews/blob/master/doc/flowchart-v1.jpg)
