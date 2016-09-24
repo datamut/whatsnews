@@ -129,7 +129,7 @@ def use_mock(mock_server):
         def wrapper(*args, **kwargs):
             with mock_server.get_server():
                 func(*args, **kwargs)
-
+        wrapper.__name__ == func.__name__
         return wrapper
 
     return mock_decorator
