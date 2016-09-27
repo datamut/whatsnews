@@ -47,13 +47,13 @@ def parse_host_port(url):
 
 
 # TODO: try to reuse this code, it is duplicated with code in search_api
-# this decorator not work for nosetests
 def use_mock(mock_server):
     def mock_decorator(func):
         def wrapper(*args, **kwargs):
             with mock_server.get_server():
                 func(*args, **kwargs)
-
+        # Line below is used to ensure test function can be seen as test.
+        wrapper.__name__ = func.__name__
         return wrapper
 
     return mock_decorator

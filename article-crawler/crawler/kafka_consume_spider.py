@@ -21,7 +21,7 @@ class KafkaConsumeSpider(scrapy.Spider):
         spider.set_kafka(crawler.settings)
         return spider
 
-    def set_kafka(self, settings):
+    def set_kafka(self, settings, consumer=None):
         """Set Kafka consumer info. Add signals to triger Kafka consume action.
 
         Raises
@@ -29,13 +29,17 @@ class KafkaConsumeSpider(scrapy.Spider):
         Raise ValueError when topic, group, or bootstrap_servers is not
         specified.
         """
-        topic = settings.get('KAFKA_TOPIC_ID')
-        group = settings.get('KAFKA_GROUP_ID')
-        servers = settings.get('KAFKA_BOOTSTRAP_SERVERS')
-        kafka_servers = servers.split(',')
+        if consumer is None:
+            topic = settings.get('KAFKA_TOPIC_ID')
+            group = settings.get('KAFKA_GROUP_ID')
+            servers = settings.get('KAFKA_BOOTSTRAP_SERVERS')
+            kafka_servers = servers.split(',')
 
-        self.consumer = kafka.KafkaConsumer(topic, group_id=group,
-                                            bootstrap_servers=kafka_servers)
+            self.consumer = kafka.KafkaConsumer(topic, group_id=group,
+                                                bootstrap_servers=kafka_servers)
+        else:
+            self.consumer = consumer
+
         self.crawler.signals.connect(self.spider_idle,
                                      scrapy.signals.spider_idle)
         self.crawler.signals.connect(self.item_scraped,
