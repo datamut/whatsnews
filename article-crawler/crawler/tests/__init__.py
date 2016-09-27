@@ -1,6 +1,6 @@
 """
 Author: Wenhua Yang
-Date: 09/27/2016
+Date: 9/24/16
 """
 
 import os
@@ -8,6 +8,7 @@ from scrapy.http import TextResponse, Request
 
 
 def fake_response(file_name, url):
+    # TODO: Try to reuse this fake_response
     request = Request(url=url)
     responses_dir = os.path.dirname(os.path.realpath(__file__))
     file_path = os.path.join(responses_dir, file_name)
