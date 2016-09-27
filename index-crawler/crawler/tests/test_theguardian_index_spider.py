@@ -17,7 +17,7 @@ class TestTheGuardianIndexSpider(unittest.TestCase):
 
     def test_parse(self):
         url = 'https://www.theguardian.com/au'
-        response = fake_response('data/theguardian-1.html', url)
+        response = fake_response('data/theguardian-1.dat', url)
         items = list(self.spider.parse(response))
         self.assertEqual(len(items), 2)
         self.assertEquals(set(map(lambda x: x['url'], items)),
@@ -26,7 +26,7 @@ class TestTheGuardianIndexSpider(unittest.TestCase):
                           'https://www.theguardian.com/us-news/live/2016/sep/26/hillary-clinton-donald-trump-presidential-debate-live'
                           })
 
-        response = fake_response('data/theguardian-2.html', url)
+        response = fake_response('data/theguardian-2.dat', url)
         items = list((self.spider.parse(response)))
         self.assertEqual(len(items), 103)
         rec_urls = []
